@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bingo App</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="nav">
+    <button id="newGame" class="btn__newGame">New Game</button>
+    <button id="endGame" class="btn__endGame">End Game</button>
+    <button id="bingo" class="btn__callBingo">BINGO!</button>
+    </div>
+    <table border="2px" style="display: inline-table" >
+      <tr>
+        <th colspan="3">User</td>
+        <th colspan="2">Score: 0</td>
+      </tr>
+      <tr>
+        <th>B</td>
+        <th>I</td>
+        <th>N</td>
+        <th>G</td>
+        <th>O</td>
+      </tr>
+      <tr>
+        <td id="p1-1" class="p1Square p1Board__square p1-1">1</td>
+        <td id="p1-6" class="p1Square p1Board__square p1-6"></td>
+        <td id="p1-11" class="p1Square p1Board__square p1-11"></td>
+        <td id="p1-16" class="p1Square p1Board__square p1-16"></td>
+        <td id="p1-21" class="p1Square p1Board__square p1-21"></td>
+      </tr>
+      <tr>
+        <td id="p1-2" class="p1Square p1Board__square p1-2">2</td>
+        <td id="p1-7" class="p1Square p1Board__square p1-7"></td>
+        <td id="p1-12" class="p1Square p1Board__square p1-12"></td>
+        <td id="p1-17" class="p1Square p1Board__square p1-17"></td>
+        <td id="p1-22" class="p1Square p1Board__square p1-22"></td>
+      </tr>
+      <tr>
+        <td id="p1-3" class="p1Square p1Board__square p1-3">3</td>
+        <td id="p1-8" class="p1Square p1Board__square p1-8"></td>
+        <td id="p1-13" class="p1Square p1Board__square p1-13">FREE</td>
+        <td id="p1-18" class="p1Square p1Board__square p1-18"></td>
+        <td id="p1-23" class="p1Square p1Board__square p1-23"></td>
+      </tr>
+      <tr>
+        <td id="p1-4" class="p1Square p1Board__square p1-4">4</td>
+        <td id="p1-9" class="p1Square p1Board__square p1-9"></td>
+        <td id="p1-14" class="p1Square p1Board__square p1-14"></td>
+        <td id="p1-19" class="p1Square p1Board__square p1-19"></td>
+        <td id="p1-24" class="p1Square p1Board__square p1-24"></td>
+      </tr>
+      <tr>
+        <td id="p1-5" class="p1Square p1Board__square p1-5">15</td>
+        <td id="p1-10" class="p1Square p1Board__square p1-10">30</td>
+        <td id="p1-15" class="p1Square p1Board__square p1-15">45</td>
+        <td id="p1-20" class="p1Square p1Board__square p1-20">60</td>
+        <td id="p1-25" class="p1Square p1Board__square p1-25">75</td>
+      </tr>
+  </table>
+
+  <table border="5px" style="display: inline-table">
+    <tr>
+      <th colspan="3">Player 2</td>
+      <th colspan="2">Score: 0</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>I</td>
+      <td>N</td>
+      <td>G</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td id="p2-1" class=" p2Board__square p2-1">1</td>
+      <td id="p2-6" class=" p2Board__square p2-6"></td>
+      <td id="p2-11" class=" p2Board__square p2-11"></td>
+      <td id="p2-16" class=" p2Board__square p2-16"></td>
+      <td id="p2-21" class=" p2Board__square p2-21"></td>
+    </tr>
+    <tr>
+      <td id="p2-2" class="p2Board__square p2-2">2</td>
+      <td id="p2-7" class="p2Board__square p2-7"></td>
+      <td id="p2-12" class="p2Board__square p2-12"></td>
+      <td id="p2-17" class="p2Board__square p2-17"></td>
+      <td id="p2-22" class="p2Board__square p2-22"></td>
+    </tr>
+    <tr>
+      <td id="p2-3" class="p2Board__square p2-3">3</td>
+      <td id="p2-8" class="p2Board__square p2-8"></td>
+      <td id="p2-13" class="p2Board__square p2-13">FREE</td>
+      <td id="p2-18" class="p2Board__square p2-18"></td>
+      <td id="p2-23" class="p2Board__square p2-23"></td>
+    </tr>
+    <tr>
+      <td id="p2-4" class="p2Board__square p2-4">4</td>
+      <td id="p2-9" class="p2Board__square p2-9"></td>
+      <td id="p2-14" class="p2Board__square p2-14"></td>
+      <td id="p2-19" class="p2Board__square p2-19"></td>
+      <td id="p2-24" class="p2Board__square p2-24"></td>
+    </tr>
+    <tr>
+      <td id="p2-5" class="p2Board__square p2-5">15</td>
+      <td id="p2-10" class="p2Board__square p2-10">30</td>
+      <td id="p2-15" class="p2Board__square p2-15">45</td>
+      <td id="p2-20" class="p2Board__square p2-20">60</td>
+      <td id="p2-25" class="p2Board__square p2-25">75</td>
+    </tr>
+  </table>
+  <table border="5px" style="display: inline-table">
+    <tr>
+      <th colspan="3">Player 3</td>
+      <th colspan="2">Score: 0</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>I</td>
+      <td>N</td>
+      <td>G</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td id="p3-1" class=" p3Board__square p3-1">1</td>
+      <td id="p3-6" class=" p3Board__square p3-6"></td>
+      <td id="p3-11" class=" p3Board__square p3-11"></td>
+      <td id="p3-16" class=" p3Board__square p3-16"></td>
+      <td id="p3-21" class=" p3Board__square p3-21"></td>
+    </tr>
+    <tr>
+      <td id="p3-2" class="p3Board__square p3-2">2</td>
+      <td id="p3-7" class="p3Board__square p3-7"></td>
+      <td id="p3-12" class="p3Board__square p3-12"></td>
+      <td id="p3-17" class="p3Board__square p3-17"></td>
+      <td id="p3-22" class="p3Board__square p3-22"></td>
+    </tr>
+    <tr>
+      <td id="p3-3" class="p3Board__square p3-3">3</td>
+      <td id="p3-8" class="p3Board__square p3-8"></td>
+      <td id="p3-13" class="p3Board__square p3-13">FREE</td>
+      <td id="p3-18" class="p3Board__square p3-18"></td>
+      <td id="p3-23" class="p3Board__square p3-23"></td>
+    </tr>
+    <tr>
+      <td id="p3-4" class="p3Board__square p3-4">4</td>
+      <td id="p3-9" class="p3Board__square p3-9"></td>
+      <td id="p3-14" class="p3Board__square p3-14"></td>
+      <td id="p3-19" class="p3Board__square p3-19"></td>
+      <td id="p3-24" class="p3Board__square p3-24"></td>
+    </tr>
+    <tr>
+      <td id="p3-5" class="p3Board__square p3-5">15</td>
+      <td id="p3-10" class="p3Board__square p3-10">30</td>
+      <td id="p3-15" class="p3Board__square p3-15">45</td>
+      <td id="p3-20" class="p3Board__square p3-20">60</td>
+      <td id="p3-25" class="p3Board__square p3-25">75</td>
+    </tr>
+  </table>
+  <table border="5px" style="display: inline-table">
+    <tr>
+      <th colspan="3">Player 4</td>
+      <th colspan="2">Score: 0</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>I</td>
+      <td>N</td>
+      <td>G</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td id="p4-1" class=" p4Board__square p4-1">1</td>
+      <td id="p4-6" class=" p4Board__square p4-6"></td>
+      <td id="p4-11" class=" p4Board__square p4-11"></td>
+      <td id="p4-16" class=" p4Board__square p4-16"></td>
+      <td id="p4-21" class=" p4Board__square p4-21"></td>
+    </tr>
+    <tr>
+      <td id="p4-2" class="p4Board__square p4-2">2</td>
+      <td id="p4-7" class="p4Board__square p4-7"></td>
+      <td id="p4-12" class="p4Board__square p4-12"></td>
+      <td id="p4-17" class="p4Board__square p4-17"></td>
+      <td id="p4-22" class="p4Board__square p4-22"></td>
+    </tr>
+    <tr>
+      <td id="p4-3" class="p4Board__square p4-3">3</td>
+      <td id="p4-8" class="p4Board__square p4-8"></td>
+      <td id="p4-13" class="p4Board__square p4-13">FREE</td>
+      <td id="p4-18" class="p4Board__square p4-18"></td>
+      <td id="p4-23" class="p4Board__square p4-23"></td>
+    </tr>
+    <tr>
+      <td id="p4-4" class="p4Board__square p4-4">4</td>
+      <td id="p4-9" class="p4Board__square p4-9"></td>
+      <td id="p4-14" class="p4Board__square p4-14"></td>
+      <td id="p4-19" class="p4Board__square p4-19"></td>
+      <td id="p4-24" class="p4Board__square p4-24"></td>
+    </tr>
+    <tr>
+      <td id="p4-5" class="p4Board__square p4-5">15</td>
+      <td id="p4-10" class="p4Board__square p4-10">30</td>
+      <td id="p4-15" class="p4Board__square p4-15">45</td>
+      <td id="p4-20" class="p4Board__square p4-20">60</td>
+      <td id="p4-25" class="p4Board__square p4-25">75</td>
+    </tr>
+  </table>
+  <table border="1px">
+    <tr>
+      <th colspan="5">Used Number Board</th>
+    </tr>
+    <tr>
+      <th colspan="2">Last Number Called:</th>
+      <th class="usedNumberBoard__calledNumber">#</th>
+      <th>Previous Number:</th>
+      <th class="usedNumberBoard__prevNumber">#</th>
+    </tr>
+      <td>B</td>
+      <td>I</td>
+      <td>N</td>
+      <td>G</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td id="ub-1" class=" usedNumberBoard__square ub-1">1</td>
+      <td id="ub-16" class=" usedNumberBoard__square ub-16">16</td>
+      <td id="ub-31" class=" usedNumberBoard__square ub-31">31</td>
+      <td id="ub-46" class=" usedNumberBoard__square ub-46">46</td>
+      <td id="ub-61" class=" usedNumberBoard__square ub-61">61</td>
+    </tr>
+    <tr>
+      <td id="ub-2" class="usedNumberBoard__square ub-2">2</td>
+      <td id="ub-17" class="usedNumberBoard__square ub-17">17</td>
+      <td id="ub-32" class="usedNumberBoard__square ub-12">32</td>
+      <td id="ub-47" class="usedNumberBoard__square ub-17">47</td>
+      <td id="ub-62" class="usedNumberBoard__square ub-22">62</td>
+    </tr>
+    <tr>
+      <td id="ub-3" class="usedNumberBoard__square ub-3">3</td>
+      <td id="ub-18" class="usedNumberBoard__square ub-8">18</td>
+      <td id="ub-33" class="usedNumberBoard__square ub-13">33</td>
+      <td id="ub-48" class="usedNumberBoard__square ub-18">48</td>
+      <td id="ub-63" class="usedNumberBoard__square ub-23">63</td>
+    </tr>
+    <tr>
+      <td id="ub-4" class="usedNumberBoard__square ub-4">4</td>
+      <td id="ub-19" class="usedNumberBoard__square ub-9">19</td>
+      <td id="ub-34" class="usedNumberBoard__square ub-14">34</td>
+      <td id="ub-49" class="usedNumberBoard__square ub-19">49</td>
+      <td id="ub-64" class="usedNumberBoard__square ub-24">64</td>
+    </tr>
+    <tr>
+      <td id="ub-5" class="usedNumberBoard__square ub-5">5</td>
+      <td id="ub-20" class="usedNumberBoard__square ub-10">20</td>
+      <td id="ub-35" class="usedNumberBoard__square ub-15">35</td>
+      <td id="ub-50" class="usedNumberBoard__square ub-20">50</td>
+      <td id="ub-65" class="usedNumberBoard__square ub-25">65</td>
+    </tr>
+    <tr>
+      <td id="ub-6" class=" usedNumberBoard__square ub-1">6</td>
+      <td id="ub-21" class=" usedNumberBoard__square ub-6">21</td>
+      <td id="ub-36" class=" usedNumberBoard__square ub-11">36</td>
+      <td id="ub-51" class=" usedNumberBoard__square ub-16">51</td>
+      <td id="ub-66" class=" usedNumberBoard__square ub-21">66</td>
+    </tr>
+    <tr>
+      <td id="ub-7" class="usedNumberBoard__square ub-2">7</td>
+      <td id="ub-22" class="usedNumberBoard__square ub-7">22</td>
+      <td id="ub-37" class="usedNumberBoard__square ub-12">37</td>
+      <td id="ub-52" class="usedNumberBoard__square ub-17">52</td>
+      <td id="ub-67" class="usedNumberBoard__square ub-22">67</td>
+    </tr>
+    <tr>
+      <td id="ub-8" class="usedNumberBoard__square ub-3">8</td>
+      <td id="ub-23" class="usedNumberBoard__square ub-8">23</td>
+      <td id="ub-38" class="usedNumberBoard__square ub-13">38</td>
+      <td id="ub-53" class="usedNumberBoard__square ub-18">53</td>
+      <td id="ub-68" class="usedNumberBoard__square ub-23">68</td>
+    </tr>
+    <tr>
+      <td id="ub-9" class="usedNumberBoard__square ub-4">9</td>
+      <td id="ub-24" class="usedNumberBoard__square ub-9">24</td>
+      <td id="ub-39" class="usedNumberBoard__square ub-14">39</td>
+      <td id="ub-54" class="usedNumberBoard__square ub-19">54</td>
+      <td id="ub-69" class="usedNumberBoard__square ub-24">69</td>
+    </tr>
+    <tr>
+      <td id="ub-10" class="usedNumberBoard__square ub-5">10</td>
+      <td id="ub-25" class="usedNumberBoard__square ub-10">25</td>
+      <td id="ub-40" class="usedNumberBoard__square ub-15">40</td>
+      <td id="ub-55" class="usedNumberBoard__square ub-20">55</td>
+      <td id="ub-70" class="usedNumberBoard__square ub-25">70</td>
+    </tr>
+    <tr>
+      <td id="ub-11" class="usedNumberBoard__square ub-1">11</td>
+      <td id="ub-26" class="usedNumberBoard__square ub-6">26</td>
+      <td id="ub-41" class="usedNumberBoard__square ub-11">41</td>
+      <td id="ub-56" class="usedNumberBoard__square ub-16">56</td>
+      <td id="ub-71" class="usedNumberBoard__square ub-21">71</td>
+    </tr>
+    <tr>
+      <td id="ub-12" class="usedNumberBoard__square ub-2">12</td>
+      <td id="ub-27" class="usedNumberBoard__square ub-7">27</td>
+      <td id="ub-42" class="usedNumberBoard__square ub-12">42</td>
+      <td id="ub-57" class="usedNumberBoard__square ub-17">57</td>
+      <td id="ub-72" class="usedNumberBoard__square ub-22">72</td>
+    </tr>
+    <tr>
+      <td id="ub-13" class="usedNumberBoard__square ub-3">13</td>
+      <td id="ub-28" class="usedNumberBoard__square ub-8">28</td>
+      <td id="ub-43" class="usedNumberBoard__square ub-13">43</td>
+      <td id="ub-58" class="usedNumberBoard__square ub-18">58</td>
+      <td id="ub-73" class="usedNumberBoard__square ub-23">73</td>
+    </tr>
+    <tr>
+      <td id="ub-14" class="usedNumberBoard__square ub-4">14</td>
+      <td id="ub-29" class="usedNumberBoard__square ub-9">29</td>
+      <td id="ub-44" class="usedNumberBoard__square ub-14">44</td>
+      <td id="ub-59" class="usedNumberBoard__square ub-19">59</td>
+      <td id="ub-74" class="usedNumberBoard__square ub-24">74</td>
+    </tr>
+    <tr>
+      <td id="ub-15" class="usedNumberBoard__square ub-5">15</td>
+      <td id="ub-30" class="usedNumberBoard__square ub-10">30</td>
+      <td id="ub-45" class="usedNumberBoard__square ub-15">45</td>
+      <td id="ub-60" class="usedNumberBoard__square ub-20">60</td>
+      <td id="ub-75" class="usedNumberBoard__square ub-25">75</td>
+    </tr>
+  </table>
+  <script src="index.js"></script>
+  </body>
+</html>

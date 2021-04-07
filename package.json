@@ -1,0 +1,14 @@
+{
+  "name": "bingo-app",
+  "version": "1.0.0",
+  "description": "Bingo game app",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "sass sass/main.scss style.css"
+  },
+  "author": "Johnaven Dubose",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.32.8"
+  }
+}
