@@ -1,1 +1,501 @@
+//////////////
+//Variables
+//////////////
 
+/////////Colors////////////
+
+//Global
+$color-body-text: black;
+$color-body-bg: #95c1eb;
+
+//Bingo Board Header
+$color-B: orange;
+$color-I: yellow;
+$color-N: green;
+$color-G: purple;
+$color-O: blue;
+
+//Buttons
+$color-btn-begin-game: green;
+$color-btn-end-game: red;
+$color-btn-settings: gray;
+$color-btn-bingo: purple;
+$color-cpu-board-selector: #e8e1d2;
+
+//Bingo Board Colors
+$color-p1-board-bg: #ebca94;
+$color-cpu-board-bg: #e8e1d2;
+$color-bingo-square: #efeefb;
+
+//Background Colors
+$color-userInfo-bg: #e8e1d2;
+$color-bingo-ball-bg-default: yellow;
+$color-info-board-bg: #a5a5ad;
+$color-used-number-board-text: #3a7509;
+$color-settings-bg: #e6e9ed;
+$color-notice-bg: radial-gradient(#ffdbfe, #d9cad8);
+$color-rules-bg: #ecf2c9;
+$color-upickem-bg: #f2fff4;
+
+/////////Font////////////
+
+$fontFamily-body: "Tahoma", sans-serif;
+
+$fontSize-default: 1.6rem;
+
+$fontWeight-normal: 400;
+
+////////////////
+//Mixins
+/////////////////
+
+@mixin grid-define {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+@mixin flexbox-define($display, $flex-wrap, $justify-content, $align-items) {
+  display: $display;
+  flex-wrap: $flex-wrap;
+  justify-content: $justify-content;
+  align-items: $align-items;
+}
+
+@mixin bingo-ball($size) {
+  @include flexbox-define(inline-flex, nowrap, center, center);
+  height: $size;
+  width: $size;
+  background-color: $color-bingo-ball-bg-default;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+@mixin bingo-board-elements($size) {
+  width: $size;
+  height: $size;
+  border: 1px;
+  display: inline-table;
+  text-align: center;
+}
+
+@mixin bingo-header {
+  &__bingoHeader {
+    height: 10px;
+
+    &--b {
+      background-color: $color-B;
+    }
+
+    &--i {
+      background-color: $color-I;
+    }
+
+    &--n {
+      background-color: $color-N;
+    }
+
+    &--g {
+      background-color: $color-G;
+    }
+
+    &--o {
+      background-color: $color-O;
+    }
+  }
+}
+
+@mixin modal($text-align: left, $z-index, $bg-color) {
+  &__modal {
+    display: none;
+    position: fixed;
+    z-index: $z-index;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb (0, 0, 0);
+    background-color: rgb (0, 0, 0, 0.4);
+  }
+
+  &__modal-content {
+    position: relative;
+    background: $bg-color;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: $text-align;
+    border-radius: 25px;
+  }
+
+  &__modal-content--close {
+    position: absolute;
+    font-size: 3rem;
+    top: 2px;
+    right: 20px;
+  }
+}
+
+//////////////////
+//Global Elements
+/////////////////
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr 7fr 5fr;
+  grid-gap: 10px;
+  padding: 0 10%;
+  font-family: $fontFamily-body;
+  font-weight: $fontWeight-normal;
+  font-size: $fontSize-default;
+  color: $color-body-text;
+  line-height: 1.7;
+  background-color: $color-body-bg;
+}
+
+h1 {
+  text-align: center;
+}
+
+.btn {
+  // float: left;
+  color: #f2f2f2;
+  text-align: right;
+  padding: 5px 5px;
+  text-decoration: none;
+  font-size: 1.6rem;
+  border-radius: 5px;
+
+  &__settings-pattern-rules {
+    margin: 0 5px;
+    background-color: $color-rules-bg;
+    color: black;
+  }
+
+  &__notice-pattern-rules {
+    background-color: $color-rules-bg;
+    color: black;
+    display: none;
+    margin: 0 5px;
+  }
+
+  &__startGame,
+  &__nextGame {
+    display: none;
+    background-color: $color-btn-begin-game;
+    margin: 0 5px;
+  }
+
+  &__cpuBoardSelector {
+    color: black;
+    background-color: $color-cpu-board-selector;
+    text-align: center;
+  }
+}
+
+///////////
+//Nav Bar
+///////////
+
+.nav {
+  display: block;
+  @include grid-define;
+  margin-top: 5px;
+
+  &__logo {
+    display: inline-block;
+    font-size: 2.5rem;
+    color: purple;
+    padding: 1px;
+    background-color: #fffde0;
+    font-weight: bold;
+  }
+
+  &__btnContainer {
+    display: inline-block;
+    float: right;
+  }
+}
+
+.btn__newGame {
+  background-color: $color-btn-begin-game;
+  margin-right: 5px;
+}
+
+.btn__endGame {
+  background-color: $color-btn-end-game;
+  margin-right: 5px;
+}
+
+.btn__settings {
+  background-color: $color-btn-settings;
+  margin-right: 5px;
+}
+
+.section__gameInfo {
+  @include grid-define;
+  @include flexbox-define(flex, nowrap, flex-start, center);
+  background-color: #e8e1d2;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+////////////////
+//Example Board
+///////////////
+
+.exampleBoard {
+  margin-right: 10px;
+  display: inline-block;
+  height: 75px;
+  width: 75px;
+  background-color: $color-info-board-bg;
+
+  &__square {
+    background-color: black;
+  }
+}
+
+////////////////////
+//Game Title Display
+///////////////////
+
+.gameTitle {
+  display: inline-block;
+  margin-right: 50px;
+  line-height: 1.25;
+}
+
+/////////////////////////
+//Called Number Container
+////////////////////////
+
+.calledNumberContainer {
+  @include flexbox-define(inline-flex, nowrap, space-between, center);
+  width: 60%;
+  background-color: black;
+  border-radius: 25px;
+}
+
+.currentBall {
+  @include bingo-ball(75px);
+}
+
+.ball {
+  @include bingo-ball(45px);
+}
+
+.countdown-timer {
+  color: white;
+  display: none;
+}
+
+////////////////////////////
+//Player Information Section
+///////////////////////////
+
+.section__userInfo {
+  @include grid-define;
+  @include flexbox-define(flex, nowrap, space-around, left);
+}
+
+///////////////////////
+//Player 1 Bingo Board
+//////////////////////
+
+.p1Board {
+  font-size: 1.4rem;
+  @include bingo-board-elements(300px);
+  background-color: $color-p1-board-bg;
+  border-radius: 25px;
+  padding: 5px;
+
+  @include bingo-header;
+
+  &__square {
+    background-color: $color-bingo-square;
+    height: 35px;
+    width: 35px;
+  }
+
+  &__btnBingo {
+    background-color: $color-btn-bingo;
+    color: #f2f2f2;
+    text-align: right;
+    padding: 5px 20%;
+    text-decoration: none;
+    font-size: 1.6rem;
+    margin-right: 5px;
+    border-radius: 5px;
+  }
+}
+
+////////////////////
+//Used Number Board
+///////////////////
+
+.usedNumberBoard {
+  font-size: 1.1rem;
+  text-align: center;
+  border: 1px;
+  background-color: $color-info-board-bg;
+  border-radius: 10px;
+
+  &__header {
+    padding: 3px;
+  }
+
+  &__square {
+    background-color: black;
+    color: $color-used-number-board-text;
+  }
+}
+
+///////////////////
+//CPU Player Boards
+///////////////////
+
+.cpuBoardContainer {
+  margin: auto;
+}
+
+.p2BoardContainer,
+.p3BoardContainer,
+.p4BoardContainer {
+  display: inline-block;
+}
+
+.cpuBoard {
+  @include bingo-board-elements(100px);
+  background-color: $color-cpu-board-bg;
+  border-radius: 15px;
+  justify-content: center;
+  padding: 8px;
+
+  @include bingo-header;
+
+  &__mobile-btn-container {
+    margin-left: 4%;
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}
+
+.p2Board__square,
+.p3Board__square,
+.p4Board__square {
+  height: 25px;
+  min-width: 25px;
+  background-color: $color-bingo-square;
+}
+
+///////////////////////
+//Modal Display Windows
+///////////////////////
+
+.settings {
+  @include modal(left, 1, $color-settings-bg);
+
+  &__current-pattern {
+    font-weight: bold;
+  }
+}
+
+.rules {
+  @include modal(left, 2, $color-rules-bg);
+
+  &__modal-subtitle {
+    display: table;
+    font-weight: bold;
+    margin: 0 auto;
+  }
+}
+
+.notice {
+  @include modal(center, 1, $color-notice-bg);
+}
+
+.upickem {
+  @include modal(left, 2, $color-upickem-bg);
+}
+
+//
+//@media only screen and (max-width: 900px) {
+//   body {
+//     grid-template-rows: 0.5fr 1fr 3fr 2fr;
+//     padding: 0 2%;
+//   }
+//   .calledNumberContainer {
+//     justify-content: center;
+//   }
+//   .ball {
+//     display: none;
+//   }
+// }
+@media only screen and (max-width: 700px) {
+  // body {
+  //   grid-template-rows: 0.25fr 0.5fr 1fr 0.5fr;
+  //   padding: 0 2%;
+  // }
+
+  .calledNumberContainer {
+    justify-content: center;
+  }
+
+  .ball {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  body {
+    grid-template-rows: 0.12fr 0.25fr 1fr 0.5fr;
+    padding: 0 2%;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  .usedNumberBoard {
+    display: none;
+  }
+
+  .p1Board {
+    @include bingo-board-elements(300px);
+  }
+
+  .cpuBoardContainer {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    align-items: right;
+  }
+
+  .cpuBoard__mobile-btn-container {
+    display: flex;
+  }
+
+  #activeCPUBoard {
+    display: inline-block;
+  }
+
+  .p2BoardContainer,
+  .p3BoardContainer,
+  .p4BoardContainer {
+    display: none;
+  }
+}

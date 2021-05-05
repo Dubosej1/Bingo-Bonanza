@@ -1,3 +1,461 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr 7fr 5fr;
+  grid-gap: 10px;
+  padding: 0 10%;
+  font-family: "Tahoma", sans-serif;
+  font-weight: 400;
+  font-size: 1.6rem;
+  color: black;
+  line-height: 1.7;
+  background-color: #95c1eb;
+}
+
+h1 {
+  text-align: center;
+}
+
+.btn {
+  color: #f2f2f2;
+  text-align: right;
+  padding: 5px 5px;
+  text-decoration: none;
+  font-size: 1.6rem;
+  border-radius: 5px;
+}
+.btn__settings-pattern-rules {
+  margin: 0 5px;
+  background-color: #ecf2c9;
+  color: black;
+}
+.btn__notice-pattern-rules {
+  background-color: #ecf2c9;
+  color: black;
+  display: none;
+  margin: 0 5px;
+}
+.btn__startGame, .btn__nextGame {
+  display: none;
+  background-color: green;
+  margin: 0 5px;
+}
+.btn__cpuBoardSelector {
+  color: black;
+  background-color: #e8e1d2;
+  text-align: center;
+}
+
+.nav {
+  display: block;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  margin-top: 5px;
+}
+.nav__logo {
+  display: inline-block;
+  font-size: 2.5rem;
+  color: purple;
+  padding: 1px;
+  background-color: #fffde0;
+  font-weight: bold;
+}
+.nav__btnContainer {
+  display: inline-block;
+  float: right;
+}
+
+.btn__newGame {
+  background-color: green;
+  margin-right: 5px;
+}
+
+.btn__endGame {
+  background-color: red;
+  margin-right: 5px;
+}
+
+.btn__settings {
+  background-color: gray;
+  margin-right: 5px;
+}
+
+.section__gameInfo {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #e8e1d2;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.exampleBoard {
+  margin-right: 10px;
+  display: inline-block;
+  height: 75px;
+  width: 75px;
+  background-color: #a5a5ad;
+}
+.exampleBoard__square {
+  background-color: black;
+}
+
+.gameTitle {
+  display: inline-block;
+  margin-right: 50px;
+  line-height: 1.25;
+}
+
+.calledNumberContainer {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  background-color: black;
+  border-radius: 25px;
+}
+
+.currentBall {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 75px;
+  width: 75px;
+  background-color: yellow;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+.ball {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  width: 45px;
+  background-color: yellow;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+.countdown-timer {
+  color: white;
+  display: none;
+}
+
+.section__userInfo {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: left;
+}
+
+.p1Board {
+  font-size: 1.4rem;
+  width: 300px;
+  height: 300px;
+  border: 1px;
+  display: inline-table;
+  text-align: center;
+  background-color: #ebca94;
+  border-radius: 25px;
+  padding: 5px;
+}
+.p1Board__bingoHeader {
+  height: 10px;
+}
+.p1Board__bingoHeader--b {
+  background-color: orange;
+}
+.p1Board__bingoHeader--i {
+  background-color: yellow;
+}
+.p1Board__bingoHeader--n {
+  background-color: green;
+}
+.p1Board__bingoHeader--g {
+  background-color: purple;
+}
+.p1Board__bingoHeader--o {
+  background-color: blue;
+}
+.p1Board__square {
+  background-color: #efeefb;
+  height: 35px;
+  width: 35px;
+}
+.p1Board__btnBingo {
+  background-color: purple;
+  color: #f2f2f2;
+  text-align: right;
+  padding: 5px 20%;
+  text-decoration: none;
+  font-size: 1.6rem;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+
+.usedNumberBoard {
+  font-size: 1.1rem;
+  text-align: center;
+  border: 1px;
+  background-color: #a5a5ad;
+  border-radius: 10px;
+}
+.usedNumberBoard__header {
+  padding: 3px;
+}
+.usedNumberBoard__square {
+  background-color: black;
+  color: #3a7509;
+}
+
+.cpuBoardContainer {
+  margin: auto;
+}
+
+.p2BoardContainer,
+.p3BoardContainer,
+.p4BoardContainer {
+  display: inline-block;
+}
+
+.cpuBoard {
+  width: 100px;
+  height: 100px;
+  border: 1px;
+  display: inline-table;
+  text-align: center;
+  background-color: #e8e1d2;
+  border-radius: 15px;
+  justify-content: center;
+  padding: 8px;
+}
+.cpuBoard__bingoHeader {
+  height: 10px;
+}
+.cpuBoard__bingoHeader--b {
+  background-color: orange;
+}
+.cpuBoard__bingoHeader--i {
+  background-color: yellow;
+}
+.cpuBoard__bingoHeader--n {
+  background-color: green;
+}
+.cpuBoard__bingoHeader--g {
+  background-color: purple;
+}
+.cpuBoard__bingoHeader--o {
+  background-color: blue;
+}
+.cpuBoard__mobile-btn-container {
+  margin-left: 4%;
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.p2Board__square,
+.p3Board__square,
+.p4Board__square {
+  height: 25px;
+  min-width: 25px;
+  background-color: #efeefb;
+}
+
+.settings__modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb 0, 0, 0;
+  background-color: rgb 0, 0, 0, 0.4;
+}
+.settings__modal-content {
+  position: relative;
+  background: #e6e9ed;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: left;
+  border-radius: 25px;
+}
+.settings__modal-content--close {
+  position: absolute;
+  font-size: 3rem;
+  top: 2px;
+  right: 20px;
+}
+.settings__current-pattern {
+  font-weight: bold;
+}
+
+.rules__modal {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb 0, 0, 0;
+  background-color: rgb 0, 0, 0, 0.4;
+}
+.rules__modal-content {
+  position: relative;
+  background: #ecf2c9;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: left;
+  border-radius: 25px;
+}
+.rules__modal-content--close {
+  position: absolute;
+  font-size: 3rem;
+  top: 2px;
+  right: 20px;
+}
+.rules__modal-subtitle {
+  display: table;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+.notice__modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb 0, 0, 0;
+  background-color: rgb 0, 0, 0, 0.4;
+}
+.notice__modal-content {
+  position: relative;
+  background: radial-gradient(#ffdbfe, #d9cad8);
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+  border-radius: 25px;
+}
+.notice__modal-content--close {
+  position: absolute;
+  font-size: 3rem;
+  top: 2px;
+  right: 20px;
+}
+
+.upickem__modal {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb 0, 0, 0;
+  background-color: rgb 0, 0, 0, 0.4;
+}
+.upickem__modal-content {
+  position: relative;
+  background: #f2fff4;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: left;
+  border-radius: 25px;
+}
+.upickem__modal-content--close {
+  position: absolute;
+  font-size: 3rem;
+  top: 2px;
+  right: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+  .calledNumberContainer {
+    justify-content: center;
+  }
+
+  .ball {
+    display: none;
+  }
+}
+@media only screen and (max-width: 480px) {
+  body {
+    grid-template-rows: 0.12fr 0.25fr 1fr 0.5fr;
+    padding: 0 2%;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  .usedNumberBoard {
+    display: none;
+  }
+
+  .p1Board {
+    width: 300px;
+    height: 300px;
+    border: 1px;
+    display: inline-table;
+    text-align: center;
+  }
+
+  .cpuBoardContainer {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    align-items: right;
+  }
+
+  .cpuBoard__mobile-btn-container {
+    display: flex;
+  }
+
+  #activeCPUBoard {
+    display: inline-block;
+  }
+
+  .p2BoardContainer,
+.p3BoardContainer,
+.p4BoardContainer {
+    display: none;
+  }
+}
 
 /*# sourceMappingURL=style.css.map */
