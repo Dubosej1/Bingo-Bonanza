@@ -115,7 +115,7 @@ export const bingoFourCorners = new winningPattern(
   "none",
   "normal",
   "none",
-  `Complete 3 lines of 5 numbers or the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.`
+  `Complete 1 line of 5 numbers AND the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.`
 );
 
 export const bingoPostageStamp = new winningPattern(
@@ -179,7 +179,7 @@ export const bingoPostageStamp = new winningPattern(
   "none",
   "normal",
   "none",
-  `Complete 3 lines of 5 numbers or the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.`
+  `Complete a line of 5 numbers or the 4 corners.  In addition, you also have to complete a 4 block postage stamp in one of the corners.`
 );
 
 export const hardwayBingo = new winningPattern(
@@ -202,7 +202,7 @@ export const hardwayBingo = new winningPattern(
   `Complete 1 lines of 5 numbers.  Free Space is NOT included.  A line can be horizontal, vertical or diagonal.`
 );
 
-export const doubleHardwayBingo = new winningPattern(
+export const doubleHardway = new winningPattern(
   `Double Hardway Bingo`,
   [
     [1, 2, 3, 4, 5],
@@ -222,7 +222,7 @@ export const doubleHardwayBingo = new winningPattern(
   `Complete 2 lines of 5 numbers.  Free Space is NOT included.  A line can be horizontal, vertical or diagonal.`
 );
 
-export const tripleHardwayBingo = new winningPattern(
+export const tripleHardway = new winningPattern(
   `Triple Hardway Bingo`,
   [
     [1, 2, 3, 4, 5],
@@ -283,7 +283,7 @@ export const letterI = new winningPattern(
   "none",
   "normal",
   "none",
-  `Complete the letter L Pattern`
+  `Complete the letter I Pattern`
 );
 
 export const crazyLetterI = new winningPattern(
@@ -297,7 +297,7 @@ export const crazyLetterI = new winningPattern(
   "none",
   "normal",
   "none",
-  `Complete the letter L Pattern`
+  `Complete the letter I Pattern in any orientation`
 );
 
 export const letterL = new winningPattern(
@@ -324,7 +324,7 @@ export const crazyLetterL = new winningPattern(
   "none",
   "normal",
   "none",
-  `Complete the letter L Pattern`
+  `Complete the letter L Pattern in any orientation`
 );
 
 export const letterT = new winningPattern(
@@ -351,7 +351,7 @@ export const crazyLetterT = new winningPattern(
   "none",
   "normal",
   "none",
-  `Complete the letter T Pattern`
+  `Complete the letter T Pattern in any orientation`
 );
 
 export const letterX = new winningPattern(
@@ -386,7 +386,7 @@ export const sixPack = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a 6 number block anywhere on the board.  Free Space is NOT included.`
 );
 
 export const nineBlock = new winningPattern(
@@ -407,7 +407,7 @@ export const nineBlock = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a 9 number block anywhere on the board.  Free Space is included.`
 );
 
 export const doublePostageStamp = new winningPattern(
@@ -425,7 +425,7 @@ export const doublePostageStamp = new winningPattern(
   "N",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a 4 number block in 2 of the corners on the board.`
 );
 
 export const triplePostageStamp = new winningPattern(
@@ -441,7 +441,7 @@ export const triplePostageStamp = new winningPattern(
   "N",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a 4 number block in 3 of the corners on the board.`
 );
 
 export const fourPostageStamps = new winningPattern(
@@ -452,7 +452,7 @@ export const fourPostageStamps = new winningPattern(
   "N",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a 4 number block in ALL of the corners on the board.`
 );
 
 export const smKiteLeft = new winningPattern(
@@ -463,7 +463,7 @@ export const smKiteLeft = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Small Kite Pattern.`
 );
 
 export const smKiteRight = new winningPattern(
@@ -474,7 +474,7 @@ export const smKiteRight = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Small Kite Pattern.`
 );
 
 export const crazySmKite = new winningPattern(
@@ -490,7 +490,7 @@ export const crazySmKite = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a Small Kite Pattern in any orientation.`
 );
 
 export const lgKiteLeft = new winningPattern(
@@ -501,7 +501,7 @@ export const lgKiteLeft = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Large Kite Pattern.`
 );
 
 export const lgKiteRight = new winningPattern(
@@ -512,7 +512,7 @@ export const lgKiteRight = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Large Kite Pattern.`
 );
 
 export const crazyLgKite = new winningPattern(
@@ -528,7 +528,7 @@ export const crazyLgKite = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Large Kite Pattern in any orientation.`
 );
 
 export const smPictureFrame = new winningPattern(
@@ -539,7 +539,7 @@ export const smPictureFrame = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a small square pattern around the Free Space (but not including).`
 );
 
 export const lgPictureFrame = new winningPattern(
@@ -550,7 +550,7 @@ export const lgPictureFrame = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete a large square pattern around the bingo board.`
 );
 
 export const pyramid = new winningPattern(
@@ -561,7 +561,7 @@ export const pyramid = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Pyramid patttern.`
 );
 
 export const crazyPyramid = new winningPattern(
@@ -577,7 +577,7 @@ export const crazyPyramid = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Pyramid pattern in any orientation.`
 );
 
 export const bowTie = new winningPattern(
@@ -588,7 +588,7 @@ export const bowTie = new winningPattern(
   "N",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Bow Tie Pattern.`
 );
 
 export const hourglass = new winningPattern(
@@ -599,7 +599,7 @@ export const hourglass = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Hourglass Pattern.`
 );
 
 export const crazyHourglass = new winningPattern(
@@ -613,7 +613,7 @@ export const crazyHourglass = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Hourglass Pattern in any orientation.`
 );
 
 export const cross = new winningPattern(
@@ -624,7 +624,7 @@ export const cross = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete 1 horizontal and 1 vertical line in the middle.`
 );
 
 export const doubleCross = new winningPattern(
@@ -635,7 +635,7 @@ export const doubleCross = new winningPattern(
   "BO",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Double Cross Pattern.`
 );
 
 export const checkerBoard = new winningPattern(
@@ -646,7 +646,7 @@ export const checkerBoard = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Checker Board Pattern.`
 );
 
 export const gridPattern = new winningPattern(
@@ -657,7 +657,7 @@ export const gridPattern = new winningPattern(
   "none",
   "normal",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `Complete the Grid Pattern.`
 );
 
 export const wildBingo = new winningPattern(
@@ -682,7 +682,14 @@ export const wildBingo = new winningPattern(
   "none",
   "wild",
   "none",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `<p><u>Wild Number Directions</u>:<br>
+  1. 1 bingo number is called at first.<br>
+  2. All numbers ending with the last digit of that called number are wild.<br>
+  3. You'll have 1 min to select all the wild numbers on your card. <br>
+  4. Regular play resumes.</p><br>
+
+  <p><u>Pattern Rules</u>:<br>
+  Complete 1 line of 5 numbers or the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.</p>`
 );
 
 export const blackout = new winningPattern(
@@ -746,7 +753,17 @@ export const progBingoToDouble = new winningPattern(
   "none",
   "progressive",
   "doubleBingo",
-  `Complete a line of 5 numbers or the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.`
+  `This is a Progressive Game.<br><br>
+  <p><u>Progressive Game Rules</u>: <br>
+  1. This bingo game has 2 rounds.<br>
+  2. The 1st round is played as normal.  Complete the pattern to win.<br>
+  3. After the 1st round, the game progresses to the 2nd round with all player cards still filled in. <br>
+  4. Complete the new pattern to win the 2nd round.</p><br>
+
+  <p><u>1st round Pattern Rules</u>: <br>
+  Complete a line of 5 numbers or the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.</p><br>
+  
+  <p><u>Next Progressive Round</u>: Double Bingo</p>`
 );
 
 export const progDoubleToTriple = new winningPattern(
@@ -770,10 +787,20 @@ export const progDoubleToTriple = new winningPattern(
   "none",
   "progressive",
   "tripleBingo",
-  `Complete 2 lines of 5 numbers or the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.`
+  `This is a Progressive Game.<br><br>
+  <p><u>Progressive Game Rules</u>: <br>
+  1. This bingo game has 2 rounds.<br>
+  2. The 1st round is played as normal.  Complete the pattern to win.<br>
+  3. After the 1st round, the game progresses to the 2nd round with all player cards still filled in. <br>
+  4. Complete the new pattern to win the 2nd round.</p><br>
+
+  <p><u>1st round Pattern Rules</u>: <br>
+  Complete 2 lines of 5 numbers or the 4 corners.  Free Space is included.  A line can be horizontal, vertical or diagonal.</p><br>
+  
+  <p><u>Next Progressive Round</u>: Triple Bingo</p>`
 );
 
-export const proghardtoDoubleHard = new winningPattern(
+export const progHardToDoubleHard = new winningPattern(
   `Round 1: Hardway Bingo`,
   [
     [1, 2, 3, 4, 5],
@@ -790,7 +817,17 @@ export const proghardtoDoubleHard = new winningPattern(
   "none",
   "progressive",
   "doubleHardway",
-  `Complete 1 lines of 5 numbers.  Free Space is NOT included.  A line can be horizontal, vertical or diagonal.`
+  `This is a Progressive Game.<br><br>
+  <p><u>Progressive Game Rules</u>: <br>
+  1. This bingo game has 2 rounds.<br>
+  2. The 1st round is played as normal.  Complete the pattern to win.<br>
+  3. After the 1st round, the game progresses to the 2nd round with all player cards still filled in. <br>
+  4. Complete the new pattern to win the 2nd round.</p><br>
+
+  <p><u>1st round Pattern Rules</u>: <br>
+  Complete 1 lines of 5 numbers or the 4 corners.  Free Space is NOT included.  A line can be horizontal, vertical or diagonal.</p><br>
+  
+  <p><u>Next Progressive Round</u>: Double Hardway Bingo</p>`
 );
 
 export const progDoubleHardToTripleHard = new winningPattern(
@@ -810,10 +847,20 @@ export const progDoubleHardToTripleHard = new winningPattern(
   "none",
   "progressive",
   "tripleHardway",
-  `Complete 2 lines of 5 numbers.  Free Space is NOT included.  A line can be horizontal, vertical or diagonal.`
+  `This is a Progressive Game.<br><br>
+  <p><u>Progressive Game Rules</u>: <br>
+  1. This bingo game has 2 rounds.<br>
+  2. The 1st round is played as normal.  Complete the pattern to win.<br>
+  3. After the 1st round, the game progresses to the 2nd round with all player cards still filled in. <br>
+  4. Complete the new pattern to win the 2nd round.</p><br>
+
+  <p><u>1st round Pattern Rules</u>: <br>
+  Complete 2 lines of 5 numbers or the 4 corners.  Free Space is NOT included.  A line can be horizontal, vertical or diagonal.</p><br>
+  
+  <p><u>Next Progressive Round</u>: Triple Hardway Bingo</p>`
 );
 
-export const progLToPicFrame = new winningPattern(
+export const progLetterLToPicFrame = new winningPattern(
   `Round 1: Letter L`,
   [[1, 2, 3, 4, 5, 10, 15, 20, 25]],
   1,
@@ -821,7 +868,17 @@ export const progLToPicFrame = new winningPattern(
   "none",
   "progressive",
   "lgPictureFrame",
-  `Complete the letter L Pattern`
+  `This is a Progressive Game.<br><br>
+  <p><u>Progressive Game Rules</u>: <br>
+  1. This bingo game has 2 rounds.<br>
+  2. The 1st round is played as normal.  Complete the pattern to win.<br>
+  3. After the 1st round, the game progresses to the 2nd round with all player cards still filled in. <br>
+  4. Complete the new pattern to win the 2nd round.</p><br>
+
+  <p><u>1st round Pattern Rules</u>: <br>
+  Complete the letter L Pattern</p><br>
+  
+  <p><u>Next Progressive Round</u>: Large Picture Frame</p>`
 );
 
 export const progPyramidToHourglass = new winningPattern(
@@ -832,10 +889,20 @@ export const progPyramidToHourglass = new winningPattern(
   "none",
   "progressive",
   "hourglass",
-  `A bingo number is first called.  All numbers ending with the last digit of that called number are wild.  You'll have 1 min to select all the wild numbers on your card, then regular play resumes.  Complete a regular bingo pattern.`
+  `This is a Progressive Game.<br><br>
+  <p><u>Progressive Game Rules</u>: <br>
+  1. This bingo game has 2 rounds.<br>
+  2. The 1st round is played as normal.  Complete the pattern to win.<br>
+  3. After the 1st round, the game progresses to the 2nd round with all player cards still filled in. <br>
+  4. Complete the new pattern to win the 2nd round.</p><br>
+
+  <p><u>1st round Pattern Rules</u>: <br>
+  Complete the Pyramid Pattern</p><br>
+  
+  <p><u>Next Progressive Round</u>: Hourglass</p>`
 );
 
-export const progBToJailBars = new winningPattern(
+export const progLetterBToJailBars = new winningPattern(
   `Round 1: B Column Only`,
   [[1, 2, 3, 4, 5]],
   1,
@@ -843,7 +910,17 @@ export const progBToJailBars = new winningPattern(
   "INGO",
   "progressive",
   "jailBars",
-  `Complete the B Column only`
+  `This is a Progressive Game.<br><br>
+  <p><u>Progressive Game Rules</u>: <br>
+  1. This bingo game has 2 rounds.<br>
+  2. The 1st round is played as normal.  Complete the pattern to win.<br>
+  3. After the 1st round, the game progresses to the 2nd round with all player cards still filled in. <br>
+  4. Complete the new pattern to win the 2nd round.</p><br>
+
+  <p><u>1st round Pattern Rules</u>: <br>
+  Complete the B Column</p><br>
+  
+  <p><u>Next Progressive Round</u>: Jail Bars</p>`
 );
 
 export const quickie = new winningPattern(
@@ -882,7 +959,9 @@ export const quickie = new winningPattern(
   "none",
   "quickie",
   "none",
-  `Bingo numbers will be called at twice the speed. Complete the full card!`
+  `This is a special game. <br><br>
+  
+  Bingo numbers will be called at twice the speed. Complete the full card!`
 );
 
 export const superJackpot = new winningPattern(
@@ -923,10 +1002,13 @@ export const superJackpot = new winningPattern(
   "none",
   "superJackpot",
   "none",
-  `Progressive Game:
-  Game 1: Complete either a Letter X or Letter L pattern.
-  Game 2: Complete the other letter pattern from Game 1.
-  Game 3: Complete the full card.`
+  `This is a special progressive game.<br><br>
+
+  <p><u>Super Jackpot Directions</u> : <br>
+  This is a 3 round game.  After each round, the game resumes with the player cards still filled in. <br>
+  Round 1: Complete either a Letter X or Letter L pattern. <br>
+  Round 2: Complete the other letter pattern from Round 1. <br>
+  Round 3: Complete the full card.`
 );
 
 export const uPickEm = new winningPattern(
@@ -937,7 +1019,9 @@ export const uPickEm = new winningPattern(
   "none",
   "upickem",
   "none",
-  `Pick 8 numbers between 1 and 75.  Game is played on a 9 square board.  Complete board to win.`
+  `This is a special game.<br><br>
+  
+  Pick 8 numbers between 1 and 75.  Game is played on a 9 square board, with Free Space included.  Complete the board to win.`
 );
 
 export const bonanza = new winningPattern(
@@ -976,5 +1060,11 @@ export const bonanza = new winningPattern(
   "none",
   "bonanza",
   "none",
-  `40 Bingo numbers are pre-selected before the game begins.  You'll have 1 minute to fill out your card, before more numbers are called as normal.  First player to complete full card wins.`
+  `This is a special game.<br><br>
+  
+  <p><u>Bingo Bonanza Directions</u>: <br>
+  
+  1. 40 Bingo numbers are pre-selected before the game begins.<br>  
+  2. You'll have 60 seconds to select these numbers on your card. <br>
+  3. Regular play resumes.  First player to complete the full card wins!</p>`
 );

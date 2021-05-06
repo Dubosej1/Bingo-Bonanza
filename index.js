@@ -2,35 +2,61 @@
 
 import * as Pattern from "./patterns.js";
 
-//Selectors
+///////////////////////////////////////
+//  Table of Contents
+//
+// 1. Selectors
+// 2. Declaring Global Variables
+// 3. Initial Page Setup
+// 4. Starting a New Bingo Game
+// 5. Main Game Flow and Logic
+// 6. Special Game Logic
+// 7. Generate Bingo Cards
+// 8. Player 1 Bingo Card Functionality
+// 9. Logic for Determining a Bingo
+// 10. Game UI Functions
+// 11. Settings Menu
+///////////////////////////////////////
+
+///////////////////////////////
+//        1. Selectors       //
+/////////////////////////////
+
+//Main Page Buttons
 const newGameBtn = document.querySelector(".btn__newGame");
 const endGameBtn = document.querySelector(".btn__endGame");
 const bingoBtn = document.querySelector(".p1Board__btnBingo");
 const settingsBtn = document.querySelector(".btn__settings");
+
+const closeSettingsModalBtn = document.querySelector(
+  ".settings__modal-content--close"
+);
+
+//CPU Board Selector Buttons
+const showP2BoardBtn = document.querySelector(".btn__player2Board");
+const showP3BoardBtn = document.querySelector(".btn__player3Board");
+const showP4BoardBtn = document.querySelector(".btn__player4Board");
+
+//HUD Elements
+const gameTitle = document.querySelector(".gameTitleContent");
 const calledNumber = document.querySelector(".currentBall");
 const prevNumber = document.querySelector(".prevBall");
 const thirdLastNumber = document.querySelector(".thirdLastBall");
 const fourthLastNumber = document.querySelector(".fourthLastBall");
 const fifthLastNumber = document.querySelector(".fifthLastBall");
-const bingoPatternList = document.querySelector("#settings__bingoPatternList");
-const gameTitle = document.querySelector(".gameTitleContent");
+const bingoBallUI = document.querySelectorAll(".ball");
+const countdownTimerArea = document.querySelector(".countdown-timer");
+
+//Settings Modal
 const settingsModal = document.querySelector(".settings__modal");
-const closeSettingsModalBtn = document.querySelector(
-  ".settings__modal-content--close"
-);
+const bingoPatternList = document.querySelector("#settings__bingoPatternList");
 const settingsCurrentPatternTitle = document.querySelector(
   ".settings__current-pattern"
 );
 const settingsRulesBtn = document.querySelector(".btn__settings-pattern-rules");
+
+//Notice Modal
 const noticeRulesBtn = document.querySelector(".btn__notice-pattern-rules");
-const rulesModal = document.querySelector(".rules__modal");
-const closeRulesModalBtn = document.querySelector(
-  ".rules__modal-content--close"
-);
-const rulesCurrentPatternTitle = document.querySelector(
-  ".rules__current-pattern"
-);
-const rulesText = document.querySelector(".rules__modal-content-text");
 const noticeModal = document.querySelector(".notice__modal");
 const closeNoticeModalBtn = document.querySelector(
   ".notice__modal-content--close"
@@ -39,28 +65,29 @@ const noticeModalText = document.querySelector(".notice__current-pattern");
 const startGameBtn = document.querySelector(".btn__startGame");
 const nextGameBtn = document.querySelector(".btn__nextGame");
 
+//Rules Modal
+const rulesModal = document.querySelector(".rules__modal");
+const closeRulesModalBtn = document.querySelector(
+  ".rules__modal-content--close"
+);
+const rulesCurrentPatternTitle = document.querySelector(
+  ".rules__current-pattern"
+);
+const rulesText = document.querySelector(".rules__modal-content-text");
+
+//U Pick Em "Choose Numbers" Modal
 const uPickEmModal = document.querySelector(".upickem__modal");
 const submitUPickEmBtn = document.querySelector(".btn__submitUPE");
 
-const calledNumberUI = document.querySelector(".currentBall");
-const bingoBallUI = document.querySelectorAll(".ball");
-const countdownTimerArea = document.querySelector(".countdown-timer");
+////////////////////////////////////
+// 2. Declaring Global Variables  //
+//////////////////////////////////
 
-const showP2BoardBtn = document.querySelector(".btn__player2Board");
-const showP3BoardBtn = document.querySelector(".btn__player3Board");
-const showP4BoardBtn = document.querySelector(".btn__player4Board");
+//Visual HUD Variables
+let exampleBoardTimer, noticeText;
 
-//Declaring Global Variables
-let bingoNumber,
-  bingoNumLet,
-  usedNumbers,
-  bingoTimer,
-  exampleBoardTimer,
-  p1Success,
-  wildCounter,
-  uPickEmGuard,
-  noticeText;
-let gameActive,
+//Bingo Pattern Destructuring Variables
+let activePattern,
   chosenPattern,
   patternTitle,
   winningPattern,
@@ -70,12 +97,22 @@ let gameActive,
   nextProgressive,
   patternRules,
   gameMode;
+
+// Bingo Logic Variables
+let bingoNumber, bingoNumLet, usedNumbers, bingoTimer;
+
+//Game State Variables
+let p1Success, wildCounter, uPickEmGuard, gameActive;
+
+//Player "Selected Number" Arrays
 let p1EligibleNumbers,
   p1SelectedNumbers,
   p2SelectedNumbers,
   p3SelectedNumbers,
   p4SelectedNumbers,
   uPickEmNumbers;
+
+//Player Bingo Card Numbers
 let p1SquareNumbers,
   p1CardMap,
   p2SquareNumbers,
@@ -85,50 +122,59 @@ let p1SquareNumbers,
   p4SquareNumbers,
   p4CardMap;
 
-//Temp: home of winning patterns
-let activePattern = Pattern.singleBingo;
+//////////////////////////////////
+//    3. Initial Page Setup    //
+////////////////////////////////
 
+//Sets initial Bingo Pattern (Regular Bingo)
+activePattern = Pattern.singleBingo;
+
+//Destructures Initial Bingo Pattern Object into variables needed for Game Logic
 destructurePatternObj(activePattern);
 
+//Sets up the Settings Menu and Rules Modal Functionality
+openCloseMenu();
+
+//Enables button to select a new bingo pattern in the Settings Menu
 document
   .querySelector("#btn__bingoPatternSelector")
   .addEventListener("click", changeBingoPattern);
 
-function changeBingoPattern(diffPattern) {
+//Activates the buttons that toggle which CPU Board is currently visible
+showP2BoardBtn.addEventListener("click", changeVisibleCPUBoard);
+showP3BoardBtn.addEventListener("click", changeVisibleCPUBoard);
+showP4BoardBtn.addEventListener("click", changeVisibleCPUBoard);
+
+//Enables Player 1 BINGO button
+bingoBtn.addEventListener("click", enablePlayer1BingoBtn);
+
+//Activates the button that starts a New Game session and opens the Game Title Modal
+newGameBtn.addEventListener("click", startGameSession);
+
+//Activates the button that starts the game from the Game Title Modal
+startGameBtn.addEventListener("click", newGame);
+
+/////////////////////////////////////
+//   4. Starting a new Bingo Game  //
+////////////////////////////////////
+
+//Pops up the Notice modal, with "Rules" and "Start Game" buttons
+function startGameSession() {
+  noticeModal.style.display = "block";
   if (gameMode == "progressive") {
-    diffPattern = activePattern.nextProgressive;
-    chosenPattern = diffPattern;
+    noticeModalText.innerHTML = `Progressive Game <br> ${patternTitle}`;
   } else {
-    chosenPattern =
-      bingoPatternList.options[bingoPatternList.selectedIndex].value;
+    noticeModalText.textContent = patternTitle;
   }
 
-  activePattern = Pattern[chosenPattern];
-  destructurePatternObj(activePattern);
-  if (gameMode == "progressive")
-    settingsCurrentPatternTitle.textContent = `Progressive- ${patternTitle}`;
-  else settingsCurrentPatternTitle.textContent = patternTitle;
+  setTimeout(function () {
+    noticeRulesBtn.style.display = "inline-block";
+    startGameBtn.style.display = "inline-block";
+  }, 3000);
+  return;
 }
 
-function destructurePatternObj(obj) {
-  patternTitle = obj.title;
-  [...winningPattern] = obj.pattern;
-  linesNeeded = obj.linesNeeded;
-  freeSpaceIncluded = obj.freeSpace;
-  numExclusion = obj.numExclusion.split("");
-  gameMode = obj.gameMode;
-  nextProgressive = obj.nextProgressive;
-  patternRules = obj.rules;
-  // {
-  //   title,
-  //   pattern: winningPattern,
-  //   linesNeeded,
-  //   freeSpace,
-  //   numExclusion,
-  //   rules,
-  // } = obj;
-}
-
+//Updates HUD display and sets up the next progressive game
 function nextProgGame(noticeText) {
   clearInterval(exampleBoardTimer);
   clearInterval(bingoTimer);
@@ -146,15 +192,19 @@ function nextProgGame(noticeText) {
     nextGameBtn.addEventListener("click", nextProgressiveRound);
   }
 
+  //starts next Super Jackpot Round
   function nextSuperJackpotRound() {
     noticeModal.style.display = "none";
     activateExampleBoard(winningPattern);
     bingoTimer = setInterval(bingoEvent, 4000);
   }
 
+  //starts next Progressive Game Round
   function nextProgressiveRound() {
     changeBingoPattern(nextProgressive);
     gameMode = "normal";
+    if (freeSpaceIncluded) activateFreeSpace();
+    nextGameBtn.style.display = "none";
     noticeModalText.textContent = `Next Progressive Round: ${patternTitle}`;
 
     setTimeout(function () {
@@ -166,108 +216,26 @@ function nextProgGame(noticeText) {
   }
 }
 
-//Adds button functionality to start New Game
-newGameBtn.addEventListener("click", startGameSession);
+//////////////////////////////////////////
+//     5.  Main Game Flow and Logic     //
+/////////////////////////////////////////
 
-function startGameSession() {
-  noticeModal.style.display = "block";
-  if (gameMode == "progressive") {
-    noticeModalText.innerHTML = `Progressive Game <br> ${patternTitle}`;
-  } else {
-    noticeModalText.textContent = patternTitle;
-  }
-
-  // if (gameMode == "upickem") {
-  //   startGameBtn.removeEventListener("click", newGame);
-  //   startGameBtn.addEventListener("click", startUPickEm);
-
-  //   function startUPickEm () {
-  //     startGameBtn.removeEventListener("click", startUPickEm);
-  //     startGameBtn.addEventListener("click", newGame);
-  //     noticeModal.style.display = "none";
-
-  //     uPickEmModal.style.display = "block";
-  //     document.querySelector(".btn__submitUPE").addEventListener("click", uPickEmLogic);
-  //   });
-  // }
-
-  setTimeout(function () {
-    noticeRulesBtn.style.display = "inline-block";
-    startGameBtn.style.display = "inline-block";
-  }, 3000);
-  return;
-}
-
-//Adds button functionality to open Settings Modal
-settingsBtn.addEventListener("click", function () {
-  settingsModal.style.display = "block";
-  settingsCurrentPatternTitle.textContent = patternTitle + `     `;
-  settingsRulesBtn.style.display = "inline-block";
-});
-
-//Adds button functionality to open Rules Modal
-settingsRulesBtn.addEventListener("click", openRulesModal);
-noticeRulesBtn.addEventListener("click", openRulesModal);
-
-function openRulesModal() {
-  rulesModal.style.display = "block";
-  rulesCurrentPatternTitle.textContent = patternTitle;
-  rulesText.textContent = patternRules;
-}
-
-//Adds button functionality to close Settings Modal
-closeSettingsModalBtn.addEventListener("click", function () {
-  settingsRulesBtn.style.display = "none";
-  settingsModal.style.display = "none";
-});
-
-window.addEventListener("click", function (event) {
-  if (event.target == settingsModal) {
-    settingsModal.style.display = "none";
-  }
-});
-
-//Adds button functionality to close Rules Modal
-closeRulesModalBtn.addEventListener("click", function () {
-  rulesModal.style.display = "none";
-});
-
-//Adds button functionlity to Start Game Button
-startGameBtn.addEventListener("click", newGame);
-
-showP2BoardBtn.addEventListener("click", changeVisibleCPUBoard);
-showP3BoardBtn.addEventListener("click", changeVisibleCPUBoard);
-showP4BoardBtn.addEventListener("click", changeVisibleCPUBoard);
-
-function changeVisibleCPUBoard(event) {
-  let targetCPUBoard = event.target.value;
-  document.querySelector("#activeCPUBoard").removeAttribute("id");
-  console.log(targetCPUBoard);
-  document.querySelector(`.${targetCPUBoard}Container`).id = `activeCPUBoard`;
-  let id = document
-    .querySelector(`.${targetCPUBoard}Container`)
-    .getAttribute("id");
-  console.log(id);
-}
-
+//Guard Clause variable, so that the U Pick Em modal only pops up once at the...
+//beginning of the game
 uPickEmGuard = true;
 
-//Starts New Bingo Game
+//Sets up a new Bingo Round
 function newGame() {
-  //closes Notice Modal and its Rules and Start Game Buttons
-  noticeModal.style.display = "none";
-  noticeRulesBtn.style.display = "none";
-  startGameBtn.style.display = "none";
+  //1. Closes Notice Modal and its "Rules" and "Start Game" Buttons
+  closeNoticeModal();
 
-  //disables "New Game" button function
-  newGameBtn.removeEventListener("click", startGameSession);
-  endGameBtn.addEventListener("click", function () {
-    noticeText = `Game Ended`;
-    endGame(noticeText);
-  });
-  //Sets game in active state
+  //2. Enables "End Game" Button while disabling "New Game" Btn
+  enableEndGameBtn();
+
+  //3. Sets game in active state
   gameActive = true;
-  //Resets game variables
+
+  //4. Resets game variables
   bingoNumber = undefined;
   bingoNumLet = undefined;
   p1Success = undefined;
@@ -279,214 +247,159 @@ function newGame() {
   p3SelectedNumbers = [];
   p4SelectedNumbers = [];
 
-  //Resets UI Elements
+  //5. Resets UI Elements
   clearUI();
 
-  //Sets Game Title
+  //6. Sets Game Title
   gameTitle.textContent = patternTitle;
 
-  //Activate Example Board
+  //7. Activate Example Board
   activateExampleBoard(winningPattern);
 
-  //U Pick 'Em Logic
-  if (gameMode == "upickem" && uPickEmGuard) {
-    uPickEmNumbers = [];
-    uPickEmModal.style.display = "block";
-    submitUPickEmBtn.addEventListener("click", collectUPickEmNums);
-    return;
+  //8. If in "U Pick Em" mode, starts U Pick Em Logic
+  if (gameMode == "upickem" && uPickEmGuard) uPickEmLogic();
 
-    function collectUPickEmNums() {
-      const uPickEmDuplicateError = document.querySelector(
-        ".upickem__modal-duplicate-error"
-      );
-      for (let i = 1; i <= 8; i++) {
-        if (
-          uPickEmNumbers.includes(
-            Number(document.querySelector(`#upeValue${i}`).value)
-          )
-        ) {
-          uPickEmDuplicateError.innerHTML = `<b>Error: Duplicate Numbers.  Please Try Again</br>`;
-          while (uPickEmNumbers.length) {
-            uPickEmNumbers.pop();
-          }
-          submitUPickEmBtn.removeEventListener("click", collectUPickEmNums);
-          newGame();
-          return;
-        }
-
-        uPickEmNumbers.push(
-          Number(document.querySelector(`#upeValue${i}`).value)
-        );
-      }
-
-      if (uPickEmNumbers.includes(0)) {
-        uPickEmDuplicateError.innerHTML = `<b>Error: Please choose ALL 8 numbers</br>`;
-        while (uPickEmNumbers.length) {
-          uPickEmNumbers.pop();
-        }
-        submitUPickEmBtn.removeEventListener("click", collectUPickEmNums);
-        newGame();
-        return;
-      }
-
-      submitUPickEmBtn.removeEventListener("click", collectUPickEmNums);
-      uPickEmDuplicateError.innerHTML = ``;
-      uPickEmModal.style.display = "none";
-      uPickEmGuard = false;
-      changeBingoHeaderUI("clear");
-      newGame();
-    }
-  }
-
-  //Generate Player Bingo Card Numbers
+  //9. Generate Player Bingo Card Numbers
   [p1SquareNumbers, p1CardMap] = generateCards("p1");
   [p2SquareNumbers, p2CardMap] = generateCards("p2");
   [p3SquareNumbers, p3CardMap] = generateCards("p3");
   [p4SquareNumbers, p4CardMap] = generateCards("p4");
-  // console.log(`Player 1 Square Numbers: ${p1SquareNumbers}`);
-  // console.log(`Player 1 Card Map: ${p1CardMap}`);
-  // console.log(`Player 2 Square Numbers: ${p2SquareNumbers}`);
-  // console.log(`Player 2 Card Map: ${p2CardMap}`);
-  // console.log(`Player 3 Square Numbers: ${p3SquareNumbers}`);
-  // console.log(`Player 3 Card Map: ${p3CardMap}`);
-  // console.log(`Player 4 Square Numbers: ${p4SquareNumbers}`);
-  // console.log(`Player 4 Card Map: ${p4CardMap}`);
 
-  //Automatically enables FREE SPACE for all Players based on winningPattern
-  for (let value of winningPattern) {
-    if (value.includes(13)) {
-      activateFreeSpace();
-      break;
-    }
-  }
+  //10. Automatically enables FREE SPACE for all Players based on winningPattern
 
-  //Enables Player 1 to select/unselect squares
+  if (freeSpaceIncluded) activateFreeSpace();
+
+  // for (let value of winningPattern) {
+  //   if (value.includes(13)) {
+  //     activateFreeSpace();
+  //     break;
+  //   }
+  // }
+
+  //11. Enables Player 1 to select/unselect squares
   let p1Squares = document.querySelectorAll(`.p1Board__square`);
   for (let value of p1Squares) value.addEventListener("click", selectP1Square);
 
-  //Enables Player 1 BINGO button
-  bingoBtn.addEventListener("click", function () {
-    checkBingo("p1", p1SelectedNumbers, p1EligibleNumbers);
-    //Adds 10 second cooldown before next number call, if Player 1 BINGO fails
-    if (gameActive && !p1Success)
-      setTimeout(function () {
-        bingoTimer = setInterval(bingoEvent, 4000);
-      }, 6000);
-  });
+  //12. Begin Bingo Game based on a specific game mode
+  startBingoGame(gameMode);
 
-  //Execute different Game Modes
-  switch (gameMode) {
-    //Implement Bonanza Mode
-    case "bonanza":
-      startTimer(120);
-      for (let i = 1; i <= 40; i++) {
-        if (i < 39) bingoEvent();
-        if (i == 40) {
-          setTimeout(function () {
-            bingoTimer = setInterval(bingoEvent, 4000);
-          }, 120000);
+  //////////// newGame() Helper Functions ////////////
+
+  //Closes the notice modal, in order to start the round.
+  function closeNoticeModal() {
+    noticeModal.style.display = "none";
+    noticeRulesBtn.style.display = "none";
+    startGameBtn.style.display = "none";
+  }
+
+  //Enables the "End Game" btn (while disabling the "New Game" btn) when the round...
+  // is in session
+  function enableEndGameBtn() {
+    newGameBtn.removeEventListener("click", startGameSession);
+    endGameBtn.addEventListener("click", function () {
+      noticeText = `Game Ended`;
+      endGame(noticeText);
+    });
+  }
+
+  //Implements the logic of various special game modes (see documentation)
+  function startBingoGame(gameMode) {
+    switch (gameMode) {
+      //Implements Bonanza Mode
+      case "bonanza":
+        startTimer(120);
+        for (let i = 1; i <= 40; i++) {
+          if (i < 39) bingoEvent();
+          if (i == 40) {
+            setTimeout(function () {
+              bingoTimer = setInterval(bingoEvent, 4000);
+            }, 120000);
+          }
         }
-      }
-      break;
-    //Implement Quickie Mode
-    case "quickie":
-      bingoTimer = setInterval(bingoEvent, 2000);
-      break;
-    //Implement default normal mode
-    default:
-      bingoTimer = setInterval(bingoEvent, 4000);
+        break;
+      //Implements Quickie Mode
+      case "quickie":
+        bingoTimer = setInterval(bingoEvent, 2000);
+        break;
+      //Implements default normal mode
+      default:
+        bingoTimer = setInterval(bingoEvent, 4000);
+    }
   }
 }
 
-//   //Implement Bonanza Mode
-//   if (gameMode == "bonanza") {
-//     for (let i = 1; i <= 40; i++) {
-//       if (i < 39) bingoEvent();
-//       if (i == 40) {
-//         setTimeout(function () {
-//           timer = setInterval(bingoEvent, 4000);
-//         }, 60000);
-//       }
-//     }
-//   } else {
-//     //Interval Timer for calling Bingo Numbers
-//     bingoTimer = setInterval(bingoEvent, 4000);
-//   }
-// }
-
-//Call next Bingo Number and main game logic
+//Calls a bingo number and determines if it's valid
 function bingoEvent() {
-  //Cancels game if it's been accidentally left on
+  //1. Cancels the bingoEvent Interval timer if it's been accidentally left on
   if (!gameActive) {
     clearInterval(bingoTimer);
     return;
   }
-  //Generate unique random bingo number
+
+  //2. Generate unique random bingo number
   bingoNumber = callBingoNumber();
-  //Assigns letter to Bingo Number
+
+  //3. Assigns letter to Bingo Number
   bingoNumLet = letterAssign(bingoNumber);
 
+  //4. Checks if the bingo number is valid for the current bingo pattern.  If not, it generates a new bingo number
   excludeBingoNumber();
 
-  console.log(`Random Number: ${bingoNumber}`);
-  console.log(`Bingo Number: ${bingoNumLet}`);
-
-  function excludeBingoNumber() {
-    let j = 0;
-
-    while (j < 1) {
-      let [bingoLetter] = bingoNumLet.split("", 1);
-      if (
-        usedNumbers.includes(bingoNumber) ||
-        numExclusion.includes(bingoLetter)
-      ) {
-        bingoNumber = callBingoNumber();
-        bingoNumLet = letterAssign(bingoNumber);
-      } else {
-        j++;
-      }
-    }
-  }
-
+  //5. If in "Wild" mode, starts Wild Number Logic
   if (gameMode == "wild" && wildCounter == 0) {
     wildNumberSelector(bingoNumber);
     return;
   }
 
+  //6. Starts bingo logic for current bingo number
   bingoLogic(bingoNumber, bingoNumLet);
 }
 
+//Main Game Logic.  Processes the bingo number for all players
 function bingoLogic(bingoNumber, bingoNumLet) {
-  if (bingoNumLet)
-    //Adds Bingo Number to Used Numbers Array
-    usedNumbers.push(bingoNumber);
+  //1. Adds Bingo Number to Used Numbers Array
+  usedNumbers.push(bingoNumber);
 
-  //Updates "Used Number Board" display
-  calledNumber.textContent = bingoNumLet;
-  prevNumber.textContent = letterAssign(usedNumbers[usedNumbers.length - 2]);
-  thirdLastNumber.textContent = letterAssign(
-    usedNumbers[usedNumbers.length - 3]
-  );
-  fourthLastNumber.textContent = letterAssign(
-    usedNumbers[usedNumbers.length - 4]
-  );
-  fifthLastNumber.textContent = letterAssign(
-    usedNumbers[usedNumbers.length - 5]
-  );
-  document.querySelector(`#ub-${bingoNumber}`).style.color = "#7EFF14";
+  //2. Updates "Used Number Board" display
+  updateUsedNumberDisplay();
 
-  //Updates Player1 Eligible Numbers Array
+  //3. Updates Player1 Eligible Numbers Array
   if (p1SquareNumbers.includes(bingoNumber)) {
     for (let [squarePosition, squareNumber] of p1CardMap) {
       if (squareNumber == bingoNumber) p1EligibleNumbers.push(squarePosition);
     }
   }
 
-  //Updates all opponents Bingo Card Displays and selectedNumber Arrays
+  //4. Updates all opponents Bingo Card Displays and selectedNumber Arrays
   opponentAI("p2", p2SquareNumbers, p2SelectedNumbers, p2CardMap);
   opponentAI("p3", p3SquareNumbers, p3SelectedNumbers, p3CardMap);
   opponentAI("p4", p4SquareNumbers, p4SelectedNumbers, p4CardMap);
 
+  //5. Checks opponent cards for Bingo
+  checkBingo("p2", p2SelectedNumbers);
+  checkBingo("p3", p3SelectedNumbers);
+  checkBingo("p4", p4SelectedNumbers);
+
+  //////////// bingoLogic() Helper Functions ////////////
+
+  //Updates HUD information on screen
+  function updateUsedNumberDisplay() {
+    calledNumber.textContent = bingoNumLet;
+    prevNumber.textContent = letterAssign(usedNumbers[usedNumbers.length - 2]);
+    thirdLastNumber.textContent = letterAssign(
+      usedNumbers[usedNumbers.length - 3]
+    );
+    fourthLastNumber.textContent = letterAssign(
+      usedNumbers[usedNumbers.length - 4]
+    );
+    fifthLastNumber.textContent = letterAssign(
+      usedNumbers[usedNumbers.length - 5]
+    );
+    document.querySelector(`#ub-${bingoNumber}`).style.color = "#7EFF14";
+  }
+
+  //Updates Opponent bingo boards if the current bingo number is on any of their...
+  // boards.
   function opponentAI(playerID, arr, arr2, map) {
     if (arr.includes(bingoNumber)) {
       for (let [squarePosition, squareNumber] of map) {
@@ -499,18 +412,114 @@ function bingoLogic(bingoNumber, bingoNumLet) {
       }
     }
   }
-
-  //checks opponent cards for Bingo
-  checkBingo("p2", p2SelectedNumbers);
-  checkBingo("p3", p3SelectedNumbers);
-  checkBingo("p4", p4SelectedNumbers);
 }
 
+///////////////////////////////////////////////
+//     6.  Bingo Logic Helper Functions     //
+/////////////////////////////////////////////
+
+//////////// bingoEvent() Helper Functions ////////////
+
+//generates random bingo number
+function callBingoNumber() {
+  return Math.floor(Math.random() * 75 + 1);
+}
+
+//assigns a BINGO letter to the generated number
+function letterAssign(num) {
+  let numLet = 0;
+  if (num <= 15) numLet = "B " + num;
+  if (num > 15 && num <= 30) numLet = "I " + num;
+  if (num > 30 && num <= 45) numLet = "N " + num;
+  if (num > 45 && num <= 60) numLet = "G " + num;
+  if (num > 60 && num <= 75) numLet = "O " + num;
+  return numLet;
+}
+
+//Excludes Bingo Numbers based on if they're not needed for the current bingo...
+// pattern (this info found in "Num Exclusion" variable from pattern object)
+function excludeBingoNumber() {
+  let j = 0;
+
+  while (j < 1) {
+    let [bingoLetter] = bingoNumLet.split("", 1);
+    if (
+      usedNumbers.includes(bingoNumber) ||
+      numExclusion.includes(bingoLetter)
+    ) {
+      bingoNumber = callBingoNumber();
+      bingoNumLet = letterAssign(bingoNumber);
+    } else {
+      j++;
+    }
+  }
+}
+
+/////////////////////////////////////
+//     6.  Special Game Logic     //
+///////////////////////////////////
+
+//Logic for the "U Pick Em" Game
+function uPickEmLogic() {
+  //Displays U Pick Em Modal so that the player can input the numbers they...
+  // select for their bingo card.
+  uPickEmNumbers = [];
+  uPickEmModal.style.display = "block";
+  submitUPickEmBtn.addEventListener("click", collectUPickEmNums);
+  return;
+
+  //Checks player "U Pick Em" numbers for duplicates or blanks, and prompts player to...
+  // reselect the numbers if there are any.  Starts the game afterwards.
+  function collectUPickEmNums() {
+    const uPickEmDuplicateError = document.querySelector(
+      ".upickem__modal-duplicate-error"
+    );
+    for (let i = 1; i <= 8; i++) {
+      if (
+        uPickEmNumbers.includes(
+          Number(document.querySelector(`#upeValue${i}`).value)
+        )
+      ) {
+        uPickEmDuplicateError.innerHTML = `<b>Error: Duplicate Numbers.  Please Try Again</br>`;
+        while (uPickEmNumbers.length) {
+          uPickEmNumbers.pop();
+        }
+        submitUPickEmBtn.removeEventListener("click", collectUPickEmNums);
+        newGame();
+        return;
+      }
+
+      uPickEmNumbers.push(
+        Number(document.querySelector(`#upeValue${i}`).value)
+      );
+    }
+
+    if (uPickEmNumbers.includes(0)) {
+      uPickEmDuplicateError.innerHTML = `<b>Error: Please choose ALL 8 numbers</br>`;
+      while (uPickEmNumbers.length) {
+        uPickEmNumbers.pop();
+      }
+      submitUPickEmBtn.removeEventListener("click", collectUPickEmNums);
+      newGame();
+      return;
+    }
+
+    submitUPickEmBtn.removeEventListener("click", collectUPickEmNums);
+    uPickEmDuplicateError.innerHTML = ``;
+    uPickEmModal.style.display = "none";
+    uPickEmGuard = false;
+    changeBingoHeaderUI("clear");
+    newGame();
+  }
+}
+
+//Logic for a wild number bingo pattern
 function wildNumberSelector(num) {
   clearInterval(bingoTimer);
 
   let switchNum;
 
+  //Isolates the last digit of the bingo number
   if (num < 10) {
     switchNum = num;
   } else {
@@ -519,6 +528,8 @@ function wildNumberSelector(num) {
 
   let arr;
 
+  //Takes the last digit of the 1st bingo number and selects all the other bingo...
+  // numbers with that last digit.
   switch (switchNum) {
     case 0:
       arr = [0, 10, 20, 30, 40, 50, 60, 70];
@@ -552,129 +563,55 @@ function wildNumberSelector(num) {
       break;
   }
 
+  //processes the wild numbers as bingo numbers
   for (let num of arr) {
     bingoLogic(num, letterAssign(num));
   }
 
+  //Guard counter that makes sure the wild number logic is only ran once at the...
+  // beginning of the game
   wildCounter++;
 
+  //Starts the 20 second countdown timer for the Player to select their wild numbers
   startTimer(20);
 
+  //Resumes the normal game
   setTimeout(function () {
     bingoTimer = setInterval(bingoEvent, 4000);
   }, 20000);
 }
 
-//activates Free Space for all opponents.
-//Make Free Space eligible for Player 1 BINGO
-function activateFreeSpace() {
-  p1EligibleNumbers.push(13);
-  p2SelectedNumbers.push(13);
-  p3SelectedNumbers.push(13);
-  p4SelectedNumbers.push(13);
-  document.querySelector(`#p2-13`).style.backgroundColor = "cyan";
-  document.querySelector(`#p3-13`).style.backgroundColor = "cyan";
-  document.querySelector(`#p4-13`).style.backgroundColor = "cyan";
-}
+//Starts and Displays a Countdown Timer for Wild Number and Bonanza Modes
+function startTimer(timer) {
+  calledNumber.style.display = "none";
+  bingoBallUI.forEach(function (element) {
+    element.style.display = "none";
+  });
+  countdownTimerArea.style.display = "inline-block";
 
-//checks card for BINGO
-function checkBingo(playerID, selectedNumbers, eligibleNumbers) {
-  let successPattern = [];
-  let bingoLineCount = comparePattern(selectedNumbers);
-  if (playerID == "p1") {
-    //Stops the automatic calling of bingo numbers
-    clearInterval(bingoTimer);
-    bingoLineCount == linesNeeded
-      ? (bingoLineCount = comparePattern(eligibleNumbers))
-      : (bingoLineCount = 0);
-    if (bingoLineCount == linesNeeded) {
-      console.log(`You win! Player 1 BINGO!!!`);
-      noticeText = `You win! Player 1 BINGO!!!`;
-      p1Success = true;
-      if (gameMode == "superJackpot") {
-        alterWinPatternArr(successPattern);
-        if (winningPattern.length == 0) endGame(noticeText);
-        else nextProgGame(noticeText);
-      } else if (gameMode == "progressive") {
-        nextProgGame(noticeText);
-      } else {
-        endGame(noticeText);
-      }
-    } else {
-      console.log(`Not a BINGO Player 1`);
-      noticeText = `Not a BINGO Player 1`;
-      p1Success = false;
-    }
-  } else {
-    if (bingoLineCount == linesNeeded) {
-      console.log(`You Lose... ${playerID} BINGO.`);
-      noticeText = `You Lose... ${playerID} BINGO.`;
-      if (gameMode == "superJackpot") {
-        alterWinPatternArr(successPattern);
-        if (winningPattern.length == 0) endGame(noticeText);
-        else nextProgGame(noticeText);
-      } else if (gameMode == "progressive") {
-        nextProgGame(noticeText);
-      } else {
-        endGame(noticeText);
-      }
-    } else {
-      bingoLineCount = 0;
+  let countdownTimer = setInterval(timerTick, 1000);
+
+  function timerTick() {
+    document.querySelector(".countdown-timer-content").textContent = timer;
+
+    timer--;
+
+    if (timer <= 0) {
+      document.querySelector(".countdown-timer-content").textContent = "";
+      calledNumber.style.display = "inline-flex";
+      bingoBallUI.forEach(function (element) {
+        element.style.display = "inline-flex";
+      });
+      countdownTimerArea.style.display = "none";
+      clearInterval(countdownTimer);
+      return;
     }
   }
-
-  function comparePattern(arr) {
-    let bingoLine = 0;
-
-    for (let pattern of winningPattern) {
-      let toBingo = 0;
-      for (let num of pattern) {
-        if (arr.includes(num)) toBingo++;
-      }
-      if (toBingo == pattern.length) {
-        bingoLine++;
-        successPattern = pattern;
-      }
-    }
-
-    return bingoLine;
-  }
 }
 
-function alterWinPatternArr(arr) {
-  const patternIndex = winningPattern.indexOf(arr);
-  const removed = winningPattern.splice(patternIndex, 1);
-}
-//   for (let [a, b, c, d, e] of winningPattern) {
-//     if (arr.includes(a)) toBingo++;
-//     if (arr.includes(b)) toBingo++;
-//     if (arr.includes(c)) toBingo++;
-//     if (arr.includes(d)) toBingo++;
-//     if (arr.includes(e)) toBingo++;
-//     if (toBingo == 5) {
-//       break;
-//     } else {
-//       toBingo = 0;
-//     }
-//   }
-//   return toBingo;
-// }
-
-//generates random bingo number
-function callBingoNumber() {
-  return Math.floor(Math.random() * 75 + 1);
-}
-
-//assigns a BINGO letter to the generated number
-function letterAssign(num) {
-  let numLet = 0;
-  if (num <= 15) numLet = "B " + num;
-  if (num > 15 && num <= 30) numLet = "I " + num;
-  if (num > 30 && num <= 45) numLet = "N " + num;
-  if (num > 45 && num <= 60) numLet = "G " + num;
-  if (num > 60 && num <= 75) numLet = "O " + num;
-  return numLet;
-}
+/////////////////////////////////
+//  7. Generate Bingo Cards    //
+////////////////////////////////
 
 // // //1. Generates and displays numbers on a specific player's card
 // // //2. Player determined by PlayerID argument. This is a string that
@@ -685,6 +622,7 @@ function generateCards(playerID) {
   let eligibleNumbers = [];
   const cardMap = new Map();
 
+  //Displays player "U Pick Em" numbers on the bingo board, if its U Pick Em mode
   if (gameMode == "upickem") {
     let boardNumberArr = [7, 8, 9, 12, 13, 14, 17, 18, 19];
 
@@ -721,6 +659,7 @@ function generateCards(playerID) {
       }
     }
   } else {
+    //Generates and displays random numbers on all player bingo cards
     for (let i = 1; i <= 25; i++) {
       if (i !== 13) {
         squareNumber = randomCardNumber(i);
@@ -734,9 +673,6 @@ function generateCards(playerID) {
         document.querySelector(`#${playerID}-${i}`).textContent = squareNumber;
         eligibleNumbers.push(squareNumber);
         cardMap.set(i, squareNumber);
-        // console.log(squareNumber);
-        // console.log(eligibleNumbers);
-        // console.log(cardMap);
       }
     }
   }
@@ -755,6 +691,192 @@ function randomCardNumber(num) {
   return cardNum;
 }
 
+///////////////////////////////////////////////
+//  8. Player 1 Bingo Board Functionality    //
+//////////////////////////////////////////////
+
+//activates Free Space for all opponents.
+//Make Free Space eligible for Player 1 BINGO
+function activateFreeSpace() {
+  p1EligibleNumbers.push(13);
+  p2SelectedNumbers.push(13);
+  p3SelectedNumbers.push(13);
+  p4SelectedNumbers.push(13);
+  document.querySelector(`#p2-13`).style.backgroundColor = "cyan";
+  document.querySelector(`#p3-13`).style.backgroundColor = "cyan";
+  document.querySelector(`#p4-13`).style.backgroundColor = "cyan";
+}
+
+//Gives Player 1 the ability to select a bingo square
+function selectP1Square(event) {
+  let idNumber = Number(event.target.id.slice(3));
+  // let squareNumber = event.target.innerHTML;
+  document.querySelector(`#p1-${idNumber}`).style.backgroundColor = "cyan";
+  p1SelectedNumbers.push(idNumber);
+  document
+    .querySelector(`#p1-${idNumber}`)
+    .removeEventListener("click", selectP1Square);
+  document
+    .querySelector(`#p1-${idNumber}`)
+    .addEventListener("click", unselectP1Square);
+}
+
+//Gives Player 1 the ability to unselect a bingo square
+function unselectP1Square(event) {
+  let idNumber = Number(event.target.id.slice(3));
+  // let squareNumber = event.target.innerHTML;
+  document.querySelector(`#p1-${idNumber}`).style.backgroundColor = null;
+  if (p1SelectedNumbers.includes(idNumber)) {
+    let indexElement = p1SelectedNumbers.indexOf(idNumber);
+    p1SelectedNumbers.splice(indexElement, 1);
+  }
+  document
+    .querySelector(`#p1-${idNumber}`)
+    .removeEventListener("click", unselectP1Square);
+  document
+    .querySelector(`#p1-${idNumber}`)
+    .addEventListener("click", selectP1Square);
+}
+
+function enablePlayer1BingoBtn() {
+  checkBingo("p1", p1SelectedNumbers, p1EligibleNumbers);
+  //Adds 10 second cooldown before next number call, if Player 1 BINGO fails
+  if (gameActive && !p1Success)
+    setTimeout(function () {
+      bingoTimer = setInterval(bingoEvent, 4000);
+    }, 6000);
+}
+
+//////////////////////////////////////////
+//  9. Logic for Determining a BINGO    //
+/////////////////////////////////////////
+
+//checks player card for BINGO
+function checkBingo(playerID, selectedNumbers, eligibleNumbers) {
+  let successPattern = [];
+
+  //Checks if the player's selected numbers are a successful bingo
+  let bingoLineCount = comparePattern(selectedNumbers);
+
+  //Process for determining Player 1 Bingo
+  if (playerID == "p1") {
+    //1. Stops the automatic calling of bingo numbers
+    clearInterval(bingoTimer);
+
+    //2. If Player's selected numbers are a successful bingo, then checks to see...
+    // if the bingo is valid.
+    bingoLineCount == linesNeeded
+      ? (bingoLineCount = comparePattern(eligibleNumbers))
+      : (bingoLineCount = 0);
+
+    //3A. If Player 1's bingo is valid, they win the game.
+    if (bingoLineCount == linesNeeded) {
+      noticeText = `You win! Player 1 BINGO!!!`;
+      p1Success = true;
+
+      //If Super Jackpot or Progressive Mode, proceed to next bingo round.  Else...
+      // end the game.
+      if (gameMode == "superJackpot") {
+        alterWinPatternArr(successPattern);
+        if (winningPattern.length == 0) endGame(noticeText);
+        else nextProgGame(noticeText);
+      } else if (gameMode == "progressive") {
+        nextProgGame(noticeText);
+      } else {
+        endGame(noticeText);
+      }
+    } else {
+      //3B.  If Player 1's bingo is not valid, then display message
+      noticeText = `Not a BINGO Player 1`;
+      noticeModal.style.display = "block";
+      noticeModalText.textContent = noticeText;
+      setTimeout(function () {
+        noticeModal.style.display = "none";
+      }, 5000);
+      p1Success = false;
+    }
+  } else {
+    //Process for determining opponent bingo
+
+    //1. If opponent has successful bingo, display Player 1 losing message
+    if (bingoLineCount == linesNeeded) {
+      noticeText = `You Lose... ${playerID} BINGO.`;
+
+      //If Super Jackpot or Progressive Game mode, go to next round
+      if (gameMode == "superJackpot") {
+        alterWinPatternArr(successPattern);
+        if (winningPattern.length == 0) endGame(noticeText);
+        else nextProgGame(noticeText);
+      } else if (gameMode == "progressive") {
+        nextProgGame(noticeText);
+      } else {
+        //If normal game mode, then end the game
+        endGame(noticeText);
+      }
+    } else {
+      //2. If unsuccessful bingo, then game resumes as normal
+      bingoLineCount = 0;
+    }
+  }
+
+  //Compares a player's selected number array with all the winning arrays...
+  // of the bingo pattern.
+  function comparePattern(arr) {
+    let bingoLine = 0;
+
+    for (let pattern of winningPattern) {
+      let toBingo = 0;
+      for (let num of pattern) {
+        if (arr.includes(num)) toBingo++;
+      }
+      if (toBingo == pattern.length) {
+        bingoLine++;
+        successPattern = pattern;
+      }
+    }
+
+    return bingoLine;
+  }
+}
+
+//For Super Jackpot game: removes the successful bingo pattern from the list...
+// of winning arrays for the Super Jackpot pattern.
+function alterWinPatternArr(arr) {
+  const patternIndex = winningPattern.indexOf(arr);
+  const removed = winningPattern.splice(patternIndex, 1);
+}
+
+//End bingo game routine
+function endGame(noticeText) {
+  //1. Displays notice modal with message for player
+  noticeModal.style.display = "block";
+  noticeModalText.textContent = noticeText;
+
+  //2. Resets game state variables
+  uPickEmGuard = true;
+  gameActive = false;
+  wildCounter = 0;
+
+  //3. "U Pick Em" game: Resets bingo board UI to normal
+  changeBingoHeaderUI("resume");
+
+  //4. Closes notice modal after 5 seconds
+  setTimeout(function () {
+    noticeModal.style.display = "none";
+  }, 5000);
+
+  //5. Stops bingo game interval
+  clearInterval(bingoTimer);
+
+  //6. Reactivates "New Game"btn/ Deactivates "End Game" btn
+  nextGameBtn.style.display = "none";
+  newGameBtn.addEventListener("click", startGameSession);
+}
+
+///////////////////////////////
+//  10. Game UI Functions    //
+//////////////////////////////
+
 //Resets display elements
 function clearUI() {
   for (let i = 1; i <= 75; i++)
@@ -772,64 +894,8 @@ function clearUI() {
   fifthLastNumber.textContent = "";
 }
 
-function selectP1Square(event) {
-  let idNumber = Number(event.target.id.slice(3));
-  // let squareNumber = event.target.innerHTML;
-  document.querySelector(`#p1-${idNumber}`).style.backgroundColor = "cyan";
-  p1SelectedNumbers.push(idNumber);
-  document
-    .querySelector(`#p1-${idNumber}`)
-    .removeEventListener("click", selectP1Square);
-  document
-    .querySelector(`#p1-${idNumber}`)
-    .addEventListener("click", unselectP1Square);
-}
-
-function unselectP1Square(event) {
-  let idNumber = Number(event.target.id.slice(3));
-  // let squareNumber = event.target.innerHTML;
-  document.querySelector(`#p1-${idNumber}`).style.backgroundColor = null;
-  if (p1SelectedNumbers.includes(idNumber)) {
-    let indexElement = p1SelectedNumbers.indexOf(idNumber);
-    p1SelectedNumbers.splice(indexElement, 1);
-  }
-  document
-    .querySelector(`#p1-${idNumber}`)
-    .removeEventListener("click", unselectP1Square);
-  document
-    .querySelector(`#p1-${idNumber}`)
-    .addEventListener("click", selectP1Square);
-}
-
-function endGame(noticeText) {
-  console.log("Game Ended");
-  noticeModal.style.display = "block";
-  noticeModalText.textContent = noticeText;
-  uPickEmGuard = true;
-  changeBingoHeaderUI("resume");
-  gameActive = false;
-  wildCounter = 0;
-  setTimeout(function () {
-    noticeModal.style.display = "none";
-  }, 5000);
-  clearInterval(bingoTimer);
-  nextGameBtn.style.display = "none";
-  newGameBtn.addEventListener("click", startGameSession);
-  // p1EligibleNumbers
-  // p1SelectedNumbers
-  // p2SelectedNumbers
-  // p3SelectedNumbers
-  // p4SelectedNumbers
-  // p1SquareNumbers
-  // p1CardMap
-  // p2SquareNumbers
-  // p2CardMap
-  // p3SquareNumbers
-  // p3CardMap
-  // p4SquareNumbers
-  // p4CardMap
-}
-
+//Activates Example Board, which displays and rotates through all the winning arrays...
+// from the active bingo pattern
 function activateExampleBoard(winPatterns) {
   let count = 0;
 
@@ -857,6 +923,7 @@ function activateExampleBoard(winPatterns) {
     if (count >= winPatterns.length) count = 0;
   }
 
+  //Clears the example board when a game is not active
   function clearExampleBoard() {
     for (let i = 1; i <= 25; i++) {
       document.querySelector(`#eb-${i}`).style.backgroundColor = "black";
@@ -864,6 +931,8 @@ function activateExampleBoard(winPatterns) {
   }
 }
 
+//Toggles "B I N G O"letters on/off all bingo boards, in...
+// order to increase readability for the U Pick Em game
 function changeBingoHeaderUI(action) {
   let headerArr = ["b", "i", "n", "g", "o"];
   let colorArr = ["orange", "yellow", "green", "purple", "blue"];
@@ -887,12 +956,6 @@ function changeBingoHeaderUI(action) {
       });
 
       cpuHeaderElementList.pop();
-
-      // document.querySelector(
-      //   `.cpuBoard__bingoHeader--${element}`
-      // ).style.backgroundColor = "#efeefb";
-      // document.querySelector(`.cpuBoard__bingoHeader--${element}`).textContent =
-      //   "-";
     }
   } else if (action == "resume") {
     let i = 0;
@@ -915,66 +978,89 @@ function changeBingoHeaderUI(action) {
 
       cpuHeaderElementList.pop();
       i++;
-
-      // document.querySelector(
-      //   `.cpuBoard__bingoHeader--${element}`
-      // ).style.backgroundColor = colorArr[i];
-      // document.querySelector(
-      //   `.cpuBoard__bingoHeader--${element}`
-      // ).textContent = element.toUpperCase();
     }
   }
 }
 
-function startTimer(timer) {
-  calledNumberUI.style.display = "none";
-  bingoBallUI.forEach(function (element) {
-    element.style.display = "none";
+//////////////////////////////////
+//     11.  Settings Menu       //
+/////////////////////////////////
+
+//Adds functionality to open and close the Settings and Rules Modal Windows
+function openCloseMenu() {
+  //Adds button functionality to open Settings Modal
+  settingsBtn.addEventListener("click", function () {
+    settingsModal.style.display = "block";
+    settingsCurrentPatternTitle.textContent = patternTitle + `     `;
+    settingsRulesBtn.style.display = "inline-block";
   });
-  countdownTimerArea.style.display = "inline-block";
 
-  let countdownTimer = setInterval(timerTick, 1000);
+  //Adds button functionality to open Rules Modal
+  settingsRulesBtn.addEventListener("click", openRulesModal);
+  noticeRulesBtn.addEventListener("click", openRulesModal);
 
-  function timerTick() {
-    document.querySelector(".countdown-timer-content").textContent = timer;
-
-    timer--;
-
-    if (timer <= 0) {
-      document.querySelector(".countdown-timer-content").textContent = "";
-      calledNumberUI.style.display = "inline-flex";
-      bingoBallUI.forEach(function (element) {
-        element.style.display = "inline-flex";
-      });
-      countdownTimerArea.style.display = "none";
-      clearInterval(countdownTimer);
-      return;
-    }
+  //Opens the rules modal when button is clicked
+  function openRulesModal() {
+    rulesModal.style.display = "block";
+    rulesCurrentPatternTitle.textContent = patternTitle;
+    rulesText.innerHTML = patternRules;
   }
+
+  //Adds button functionality to close Settings Modal
+  closeSettingsModalBtn.addEventListener("click", function () {
+    settingsRulesBtn.style.display = "none";
+    settingsModal.style.display = "none";
+  });
+
+  window.addEventListener("click", function (event) {
+    if (event.target == settingsModal) {
+      settingsModal.style.display = "none";
+    }
+  });
+
+  //Adds button functionality to close Rules Modal
+  closeRulesModalBtn.addEventListener("click", function () {
+    rulesModal.style.display = "none";
+  });
 }
 
-// while (gameActive) {
-//   if (count > winPatterns.length) count = 0;
+//Changes the active bingo pattern and destructures pattern object into variables
+function changeBingoPattern(diffPattern) {
+  if (gameMode == "progressive" && gameActive) {
+    diffPattern = activePattern.nextProgressive;
+    chosenPattern = diffPattern;
+  } else {
+    chosenPattern =
+      bingoPatternList.options[bingoPatternList.selectedIndex].value;
+  }
 
-//   let i = 0;
-//   for (let pattern of winPatterns) {
-//     if (i > winPatterns.length) i = 0;
-//     cycleExampleBoard(pattern, i);
-//     i++;
-//   }
+  activePattern = Pattern[chosenPattern];
+  destructurePatternObj(activePattern);
+  if (gameMode == "progressive")
+    settingsCurrentPatternTitle.textContent = `Progressive- ${patternTitle}`;
+  else settingsCurrentPatternTitle.textContent = patternTitle;
+}
 
-//   function cycleExampleBoard(winPattern, loopCount) {
-//     setTimeout(function () {
-//       for (let i = 0; i < 25; i++) {
-//         document.querySelector(`#eb-${i}`).style.backgroundColor = "black";
-//       }
+//Destructures a bingo pattern object into game logic variables
+function destructurePatternObj(obj) {
+  patternTitle = obj.title;
+  [...winningPattern] = obj.pattern;
+  linesNeeded = obj.linesNeeded;
+  freeSpaceIncluded = obj.freeSpace;
+  numExclusion = obj.numExclusion.split("");
+  gameMode = obj.gameMode;
+  nextProgressive = obj.nextProgressive;
+  patternRules = obj.rules;
+}
 
-//       for (let num of winPattern) {
-//         document.querySelector(`#eb-${num}`).style.backgroundColor = "cyan";
-//       }
-//     }, 3000 * loopCount);
-//   }
-
-//   count++;
-// }
-// }
+//Toggles which opponent bingo board is visible by pressing corresponding button.
+function changeVisibleCPUBoard(event) {
+  let targetCPUBoard = event.target.value;
+  document.querySelector("#activeCPUBoard").removeAttribute("id");
+  console.log(targetCPUBoard);
+  document.querySelector(`.${targetCPUBoard}Container`).id = `activeCPUBoard`;
+  let id = document
+    .querySelector(`.${targetCPUBoard}Container`)
+    .getAttribute("id");
+  console.log(id);
+}
